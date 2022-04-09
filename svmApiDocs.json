@@ -1,0 +1,684 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "**SVM Energy** API for retrieving customers billing information.",
+    "version": "1.0.0",
+    "title": "SVM Energy Billing Data API",
+    "contact": {
+      "name": "SVM Energy",
+      "url": "https://svmenergy.net",
+      "email": "konstantinos.a@svmenergy.net"
+    }
+  },
+  "host": "phpstack-678325-2435133.cloudwaysapps.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "Calls for obtaining access to the API"
+    },
+    {
+      "name": "Customers",
+      "description": "Calls for retrieving customer Data"
+    },
+    {
+      "name": "Billing",
+      "description": "Calls for retrieving billing related data"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Creates a new valid API key or returns the current valid key",
+        "description": "Create a new valid API key for obtaining access to authorised API calls.\n",
+        "produces": [
+          "string"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of the account requesting API access",
+            "required": true,
+            "type": "string",
+            "format": "email"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of the account requesting API access",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valid API Key",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "201": {
+            "description": "A valid API key already exists"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/delete": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Delete all assigned API keys to the account",
+        "description": "Delete all API keys created by this user.\n",
+        "produces": [
+          "string"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of the account requesting API access",
+            "required": true,
+            "type": "string",
+            "format": "email"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Password of the account requesting API access",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API keys deleted",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_1"
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{APIKey}/customers/all/": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "All customers",
+        "description": "Return a list of all customers that are assigned to\nthe requesting account\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of all customers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CustomerNameID"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{APIKey}/customers/{CustomerID}/info": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Returns information about the given customer",
+        "description": "By passing in the appropriate options, you can retrieve info for the\ngiven customer.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "CustomerID",
+            "in": "path",
+            "description": "Customer's unique ID to retrieve",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information of given customer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CustomerInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Requested resource not found"
+          }
+        }
+      }
+    },
+    "/{APIKey}/billing/totals/custromers/all/{month}/{year}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Returns billing totals of all customers for given month",
+        "description": "By passing in the appropriate options, you can retrieve billing info for\nall the customers.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "description": "Month to retrieve billing total costs",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ]
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to retrieve billing total costs",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BillingTotals"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{APIKey}/billing/totals/customers/{CustomerID}/{month}/{year}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Returns billing totals of a customer for given month",
+        "description": "By passing in the appropriate options, you can retrieve info for the\ngiven customer.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "CustomerID",
+            "in": "path",
+            "description": "ID of the customer that data are requested",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "description": "Month to retrieve billing total costs",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ]
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to retrieve billing total costs",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BillingTotalsCust"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{APIKey}/billing/sum/customers/all/{month}/{year}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Returns billing totals of a customer for given month",
+        "description": "By passing in the appropriate options, you can retrieve sum of billing totals for\nall the customers.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "description": "Month to retrieve billing total costs",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ]
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to retrieve billing total costs",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BillingTotals"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/{APIKey}/billing/sum/customers/{CustomerID}/{year}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Returns billing totals sum of a customer for given year",
+        "description": "By passing in the appropriate options, you can retrieve sum of billing totals for\nthe customer per year.\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "APIKey",
+            "in": "path",
+            "description": "A valid API key associated to the requesting account",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "CustomerID",
+            "in": "path",
+            "description": "ID of the customer that data are requested",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to retrieve billing total costs",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BillingTotals"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CustomerNameID": {
+      "type": "object",
+      "properties": {
+        "Customer_Name": {
+          "type": "string",
+          "example": "John Johnny"
+        },
+        "CustomerId": {
+          "type": "integer",
+          "example": 155
+        }
+      }
+    },
+    "CustomerInfo": {
+      "type": "object",
+      "properties": {
+        "Customer_ID": {
+          "type": "integer",
+          "example": 15
+        },
+        "Customer_Name": {
+          "type": "string",
+          "example": "John Johnny"
+        },
+        "Account_Number": {
+          "type": "integer",
+          "example": 999
+        },
+        "Meter_Number": {
+          "type": "integer",
+          "example": 888
+        },
+        "premiseId": {
+          "type": "integer",
+          "example": 888
+        },
+        "LoadEnt": {
+          "type": "string",
+          "example": "3000 KVA 3-Ph"
+        },
+        "Tariffs": {
+          "type": "string",
+          "example": "40-Medium Voltage, 50-High Voltage"
+        },
+        "Cycle": {
+          "type": "integer",
+          "example": 55
+        },
+        "Route": {
+          "type": "string",
+          "example": "LIM16"
+        }
+      }
+    },
+    "BillingTotals": {
+      "type": "object",
+      "properties": {
+        "EnergyCost": {
+          "type": "number",
+          "example": 42803.43
+        },
+        "TotalBasicPrice": {
+          "type": "number",
+          "example": 57130.51
+        },
+        "TotalSubVAT": {
+          "type": "number",
+          "example": 87810.86
+        },
+        "TotalChargesBeforeVat": {
+          "type": "number",
+          "example": 93135.86
+        },
+        "TotalCharges": {
+          "type": "number",
+          "example": 109819.92
+        },
+        "TotalAmount": {
+          "type": "number",
+          "example": 121827.92
+        }
+      }
+    },
+    "BillingTotalsCust": {
+      "type": "object",
+      "properties": {
+        "CustomerID": {
+          "type": "integer",
+          "example": 10
+        },
+        "EnergyCost": {
+          "type": "number",
+          "example": 42803.43
+        },
+        "TotalBasicPrice": {
+          "type": "number",
+          "example": 57130.51
+        },
+        "TotalSubVAT": {
+          "type": "number",
+          "example": 87810.86
+        },
+        "TotalChargesBeforeVat": {
+          "type": "number",
+          "example": 93135.86
+        },
+        "TotalCharges": {
+          "type": "number",
+          "example": 109819.92
+        },
+        "TotalAmount": {
+          "type": "number",
+          "example": 121827.92
+        }
+      }
+    },
+    "BillingSumCustYearly": {
+      "type": "object",
+      "properties": {
+        "CustomerID": {
+          "type": "integer",
+          "example": 10
+        },
+        "Year": {
+          "type": "integer",
+          "example": 2022
+        },
+        "EnergyCost": {
+          "type": "number",
+          "example": 42803.43
+        },
+        "TotalBasicPrice": {
+          "type": "number",
+          "example": 57130.51
+        },
+        "TotalSubVAT": {
+          "type": "number",
+          "example": 87810.86
+        },
+        "TotalChargesBeforeVat": {
+          "type": "number",
+          "example": 93135.86
+        },
+        "TotalCharges": {
+          "type": "number",
+          "example": 109819.92
+        },
+        "TotalAmount": {
+          "type": "number",
+          "example": 121827.92
+        }
+      }
+    },
+    "inline_response_200": {
+      "type": "object",
+      "properties": {
+        "API_Key": {
+          "type": "string",
+          "example": "95c5900fe91ee9d2877742c0b87fabe5"
+        },
+        "Expiration": {
+          "type": "string",
+          "format": "timestamp",
+          "example": "2022-04-08 05:50:13"
+        }
+      }
+    },
+    "inline_response_200_1": {
+      "type": "object",
+      "properties": {
+        "Delete": {
+          "type": "string",
+          "enum": [
+            "Success"
+          ]
+        }
+      }
+    }
+  },
+  "parameters": {
+    "username": {
+      "name": "username",
+      "in": "query",
+      "description": "Username of the account requesting API access",
+      "required": true,
+      "type": "string",
+      "format": "email"
+    },
+    "password": {
+      "name": "password",
+      "in": "query",
+      "description": "Password of the account requesting API access",
+      "required": true,
+      "type": "string"
+    },
+    "APIKey": {
+      "name": "APIKey",
+      "in": "path",
+      "description": "A valid API key associated to the requesting account",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "responses": {
+    "APIKey": {
+      "description": "Valid API Key",
+      "schema": {
+        "$ref": "#/definitions/inline_response_200"
+      }
+    },
+    "400Error": {
+      "description": "Invalid request"
+    },
+    "401Unauthorized": {
+      "description": "Unauthorized"
+    },
+    "404notfound": {
+      "description": "Requested resource not found"
+    }
+  }
+}

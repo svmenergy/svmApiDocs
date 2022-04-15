@@ -8,7 +8,7 @@ info:
     name: SVM Energy
     url: https://svmenergy.net
     email: konstantinos.a@svmenergy.net
-host: phpstack-678325-2435133.cloudwaysapps.com
+host: testapi.svm.energy
 basePath: /api
 tags:
 - name: Authorization

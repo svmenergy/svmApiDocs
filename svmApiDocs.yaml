@@ -236,7 +236,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/inline_response_200_1'
+              $ref: '#/definitions/inline_response_200_2'
         "400":
           description: Invalid request
         "404":
@@ -559,6 +559,13 @@ definitions:
     type: object
     properties:
       Delete:
+        type: string
+        enum:
+        - Success
+  inline_response_200_2:
+    type: object
+    properties:
+      Create New Customer:
         type: string
         enum:
         - Success

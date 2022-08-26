@@ -232,7 +232,7 @@ paths:
           
       responses:
         "200":
-          description: Information of given customer
+          description: Customer created successfully
           schema:
             type: array
             items:

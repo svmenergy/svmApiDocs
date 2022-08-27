@@ -169,6 +169,7 @@ paths:
           in: formData
           type: string
           required: true
+          description: Format should be **ADDRESS_POSTALCODE_CITY_COUNTRY** with the underscores (_)
     
         - name: Email
           in: formData
@@ -176,6 +177,21 @@ paths:
           required: true
         
         - name: Meter_Address
+          in: formData
+          type: string
+          required: true
+          
+        - name: Meter_PostalCode
+          in: formData
+          type: string
+          required: true
+          
+        - name: Meter_City
+          in: formData
+          type: string
+          required: true
+          
+        - name: Meter_Country
           in: formData
           type: string
           required: true

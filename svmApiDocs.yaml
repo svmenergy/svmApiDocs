@@ -190,71 +190,99 @@ paths:
         - name: Customer_Name
           in: formData
           type: string
-          required: false
+          required: true
         - name: Customer_Number
           in: formData
           type: string
-          required: false
+          required: true
         - name: Address
           in: formData
           type: string
-          required: false
+          required: true
         - name: Email
           in: formData
           type: string
-          required: false
+          required: true
+        - name: Tel_Number
+          in: formData
+          type: string
+          required: true
+        - name: VAT_Number
+          in: formData
+          type: string
+          required: true
+        - name: Discount_Rate
+          in: formData
+          type: string
+          required: true
+        - name: Consumer_Number
+          in: formData
+          type: string
+          required: true
+        - name: Customer_Class
+          in: formData
+          type: string
+          required: true
+        - name: Category
+          in: formData
+          type: string
+          required: true
         - name: Meter_Address
           in: formData
           type: string
-          required: false
+          required: true
         - name: Meter_PostalCode
           in: formData
           type: string
-          required: false
+          required: true
         - name: Meter_City
           in: formData
           type: string
-          required: false
+          required: true
         - name: Meter_Country
           in: formData
           type: string
-          required: false
+          required: true
         - name: Meter_No
           in: formData
           type: string
-          required: false
+          required: true
         - name: Premise_Id
           in: formData
           type: string
-          required: false
+          required: true
         - name: Tarrif_Code
           in: formData
           type: string
-          required: false
+          required: true
         - name: Voltage_Connection
           in: formData
           type: string
-          required: false
+          required: true
         - name: Load_Connection
           in: formData
           type: string
-          required: false
+          required: true
         - name: Load_Ent_Fuse_kVA
           in: formData
           type: string
-          required: false
+          required: true
         - name: Load_Ent_Fuse_A
           in: formData
           type: string
-          required: false
+          required: true
         - name: Cycle
           in: formData
           type: string
-          required: false
+          required: true
         - name: Route
           in: formData
           type: string
-          required: false
+          required: true
+        - name: Account_No
+          in: formData
+          type: string
+          required: true
       
       responses:
         "200":
@@ -286,11 +314,6 @@ paths:
         description: A valid API key associated to the requesting account
         required: true
         type: string
-      - name: CustomerID
-        in: path
-        description: Customer's unique ID to update
-        required: true
-        type: integer
       - name: Customer_Name
         in: formData
         type: string
@@ -304,6 +327,30 @@ paths:
         type: string
         required: false
       - name: Email
+        in: formData
+        type: string
+        required: false
+      - name: Tel_Number
+        in: formData
+        type: string
+        required: false
+      - name: VAT_Number
+        in: formData
+        type: string
+        required: false
+      - name: Discount_Rate
+        in: formData
+        type: string
+        required: false
+      - name: Consumer_Number
+        in: formData
+        type: string
+        required: false
+      - name: Customer_Class
+        in: formData
+        type: string
+        required: false
+      - name: Category
         in: formData
         type: string
         required: false
@@ -385,11 +432,6 @@ paths:
         description: A valid API key associated to the requesting account
         required: true
         type: string
-      - name: AccountNo
-        in: path
-        description: Customer's unique account number to update
-        required: true
-        type: integer
       - name: Customer_Name
         in: formData
         type: string
@@ -403,6 +445,30 @@ paths:
         type: string
         required: false
       - name: Email
+        in: formData
+        type: string
+        required: false
+      - name: Tel_Number
+        in: formData
+        type: string
+        required: false
+      - name: VAT_Number
+        in: formData
+        type: string
+        required: false
+      - name: Discount_Rate
+        in: formData
+        type: string
+        required: false
+      - name: Consumer_Number
+        in: formData
+        type: string
+        required: false
+      - name: Customer_Class
+        in: formData
+        type: string
+        required: false
+      - name: Category
         in: formData
         type: string
         required: false
@@ -730,44 +796,55 @@ definitions:
     type: object
     properties:
       Customer_ID:
-        type: string
+          type: string
       Customer_Name:
-        type: string
+          type: string
       Customer_Number:
-        type: string
+          type: string
       Address:
-        type: string
+          type: string
       Email:
-        type: string
+          type: string
+      Tel_Number:
+          type: string
+      VAT_Number:
+          type: string
+      Discount_Rate:
+          type: string
+      Consumer_Number:
+          type: string
+      Customer_Class:
+          type: string
+      Category:
+          type: string
       Meter_Address:
-        type: string
+          type: string
       Meter_PostalCode:
-        type: string
+          type: string
       Meter_City:
-        type: string
+          type: string
       Meter_Country:
-        type: string
+          type: string
       Meter_No:
-        type: string
+          type: string
       Premise_Id:
-        type: string
+          type: string
       Tariff_Code:
-        type: string
+          type: string
       Voltage_Connection:
-        type: string
+          type: string
       Load_Connection:
-        type: string
+          type: string
       Load_Ent_Fuse_kVA:
-        type: string
+          type: string
       Load_Ent_Fuse_A:
-        type: string
+          type: string
       Cycle:
-        type: string
+          type: string
       Route:
-        type: string
+          type: string
       Account_No:
-        type: string
-
+          type: string
   BillingTotals:
     type: object
     properties:

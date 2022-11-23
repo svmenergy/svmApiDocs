@@ -314,6 +314,11 @@ paths:
         description: A valid API key associated to the requesting account
         required: true
         type: string
+      - name: CustomerID
+        in: path
+        description: Customer's ID
+        required: true
+        type: string
       - name: Customer_Name
         in: formData
         type: string
@@ -432,6 +437,11 @@ paths:
         description: A valid API key associated to the requesting account
         required: true
         type: string
+      - name: AccountNo
+        in: path
+        description: Unique customer's account number.
+        required: true
+        type: string
       - name: Customer_Name
         in: formData
         type: string
@@ -531,12 +541,66 @@ paths:
             type: array
             items:
               $ref: '#/definitions/CustomerInfo'
-  
-  /{APIKey}/billing/totals/custromers/all/{month}/{year}:
+  /{APIKey}/billing/customer/{AccountNo}/{month}/{year}:
     get:
       tags:
       - Billing
-      summary: Returns billing totals of all customers for given month
+      summary: Returns billing totals of a customer for given month
+      description: |
+        By passing in the appropriate options, you can retrieve info for the
+        given customer.
+      produces:
+      - application/json
+      parameters:
+      - name: APIKey
+        in: path
+        description: A valid API key associated to the requesting account
+        required: true
+        type: string
+      - name: AccountNo
+        in: path
+        description: Unique account number of the customer that data are requested
+        required: true
+        type: integer
+      - name: month
+        in: path
+        description: Month to retrieve billing total costs
+        required: true
+        type: string
+        enum:
+        - Jan
+        - Feb
+        - Mar
+        - Apr
+        - May
+        - Jun
+        - Jul
+        - Aug
+        - Sep
+        - Oct
+        - Nov
+        - Dec
+      - name: year
+        in: path
+        description: Year to retrieve billing total costs
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BillingSummary'
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+  /{APIKey}/billing/customers/all/{month}/{year}:
+    get:
+      tags:
+      - Billing
+      summary: Returns billing totals of all customers for given month/year
       description: |
         By passing in the appropriate options, you can retrieve billing info for
         all the customers.
@@ -577,62 +641,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/BillingTotals'
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-  /{APIKey}/billing/totals/customers/{CustomerID}/{month}/{year}:
-    get:
-      tags:
-      - Billing
-      summary: Returns billing totals of a customer for given month
-      description: |
-        By passing in the appropriate options, you can retrieve info for the
-        given customer.
-      produces:
-      - application/json
-      parameters:
-      - name: APIKey
-        in: path
-        description: A valid API key associated to the requesting account
-        required: true
-        type: string
-      - name: CustomerID
-        in: path
-        description: ID of the customer that data are requested
-        required: true
-        type: integer
-      - name: month
-        in: path
-        description: Month to retrieve billing total costs
-        required: true
-        type: string
-        enum:
-        - Jan
-        - Feb
-        - Mar
-        - Apr
-        - May
-        - Jun
-        - Jul
-        - Aug
-        - Sep
-        - Oct
-        - Nov
-        - Dec
-      - name: year
-        in: path
-        description: Year to retrieve billing total costs
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: search results matching criteria
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/BillingTotalsCust'
+              $ref: '#/definitions/BillingSummaryAllMonthYear'
         "400":
           description: Invalid request
         "401":
@@ -641,7 +650,7 @@ paths:
     get:
       tags:
       - Billing
-      summary: Returns billing totals of a customer for given month
+      summary: Returns billing summation of all customers for given month
       description: |
         By passing in the appropriate options, you can retrieve sum of billing totals for
         all the customers.
@@ -682,50 +691,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/BillingTotals'
+              $ref: '#/definitions/BillingSummary'
         "400":
           description: Invalid request
         "401":
           description: Unauthorized
-  /{APIKey}/billing/sum/customers/{CustomerID}/{year}:
-    get:
-      tags:
-      - Billing
-      summary: Returns billing totals sum of a customer for given year
-      description: |
-        By passing in the appropriate options, you can retrieve sum of billing totals for
-        the customer per year.
-      produces:
-      - application/json
-      parameters:
-      - name: APIKey
-        in: path
-        description: A valid API key associated to the requesting account
-        required: true
-        type: string
-      - name: CustomerID
-        in: path
-        description: ID of the customer that data are requested
-        required: true
-        type: integer
-      - name: year
-        in: path
-        description: Year to retrieve billing total costs
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: search results matching criteria
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/BillingTotals'
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-
-  /{APIKey}/billing/customer/{AccountNo}/{month}/{year}:
+  /{APIKey}/billing/sum/customer/{AccountNo}/{year}:
     get:
       tags:
       - Billing
@@ -743,45 +714,25 @@ paths:
         type: string
       - name: AccountNo
         in: path
-        description: Customer's unique account number to retrieve
+        description: Unique account number of the customer that data are requested
         required: true
         type: integer
-      - name: month
-        in: path
-        description: Month to retrieve billing summary
-        required: true
-        type: string
-        enum:
-        - Jan
-        - Feb
-        - Mar
-        - Apr
-        - May
-        - Jun
-        - Jul
-        - Aug
-        - Sep
-        - Oct
-        - Nov
-        - Dec
       - name: year
         in: path
-        description: Year to retrieve billing summary
+        description: Year to retrieve billing total costs
         required: true
         type: integer
       responses:
         "200":
-          description: Billing Summary JSON Object
+          description: search results matching criteria
           schema:
             type: array
             items:
-              $ref: '#/definitions/BillingSummary'
+              $ref: '#/definitions/BillingSummaryYear'
         "400":
           description: Invalid request
         "401":
           description: Unauthorized
-        "500":
-          description: Internal Server Error
 definitions:
   CustomerNameID:
     type: object
@@ -845,84 +796,15 @@ definitions:
           type: string
       Account_No:
           type: string
-  BillingTotals:
-    type: object
-    properties:
-      EnergyCost:
-        type: number
-        example: 42803.43
-      TotalBasicPrice:
-        type: number
-        example: 57130.51
-      TotalSubVAT:
-        type: number
-        example: 87810.86
-      TotalChargesBeforeVat:
-        type: number
-        example: 93135.86
-      TotalCharges:
-        type: number
-        example: 109819.92
-      TotalAmount:
-        type: number
-        example: 121827.92
-  BillingTotalsCust:
-    type: object
-    properties:
-      CustomerID:
-        type: integer
-        example: 10
-      EnergyCost:
-        type: number
-        example: 42803.43
-      TotalBasicPrice:
-        type: number
-        example: 57130.51
-      TotalSubVAT:
-        type: number
-        example: 87810.86
-      TotalChargesBeforeVat:
-        type: number
-        example: 93135.86
-      TotalCharges:
-        type: number
-        example: 109819.92
-      TotalAmount:
-        type: number
-        example: 121827.92
-  BillingSumCustYearly:
-    type: object
-    properties:
-      CustomerID:
-        type: integer
-        example: 10
-      Year:
-        type: integer
-        example: 2022
-      EnergyCost:
-        type: number
-        example: 42803.43
-      TotalBasicPrice:
-        type: number
-        example: 57130.51
-      TotalSubVAT:
-        type: number
-        example: 87810.86
-      TotalChargesBeforeVat:
-        type: number
-        example: 93135.86
-      TotalCharges:
-        type: number
-        example: 109819.92
-      TotalAmount:
-        type: number
-        example: 121827.92
   BillingSummary:
     type: object
     properties:
       AccountNo:
         type: string
         description: Customer Name
+      "Month - Year":
+        type: string
+        description: Month and year of the query
       recogniseSales:
         type: array
         items:
@@ -936,6 +818,55 @@ definitions:
               type: string
             value:
               type: number
+  BillingSummaryYear:
+    type: object
+    properties:
+      AccountNo:
+        type: string
+        description: Customer Name
+      Year:
+        type: integer
+        description: Year of the query
+      recogniseSales:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: PEL value mapping ID
+            description:
+              description: Explanatory name of value
+              type: string
+            value:
+              type: number
+  BillingSummaryAllMonthYear:
+    type: object
+    properties:
+      'Month - Year':
+        type: string
+        description: Month and year of query
+      Customers:
+        type: array
+        items:
+            type: object
+            properties:
+              'Customer Name':
+                type: string
+                description: Name of the customer
+              recogniseSales:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: PEL value mapping ID
+                    description:
+                      description: Explanatory name of value
+                      type: string
+                    value:
+                      type: number
   inline_response_200:
     type: object
     properties:

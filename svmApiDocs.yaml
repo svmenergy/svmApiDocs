@@ -8,7 +8,7 @@ info:
     name: SVM Energy
     url: https://svmenergy.net
     email: konstantinos.a@svmenergy.net
-host: pel.svm.energy
+host: svm.energy
 basePath: /api
 tags:
 - name: Authorization
